@@ -1,9 +1,9 @@
-﻿using MoreSettings.Models.Variants;
+﻿using ModSettingsApi.Models.Variants;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MoreSettings.Models
+namespace ModSettingsApi.Models
 {
     public interface SettingsModel<T>
     {

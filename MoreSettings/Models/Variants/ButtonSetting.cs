@@ -1,4 +1,4 @@
-﻿namespace MoreSettings.Models.Variants
+﻿namespace ModSettingsApi.Models.Variants
 {
     public abstract class ButtonSetting : SettingsModel<string>
     {

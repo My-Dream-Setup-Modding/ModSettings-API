@@ -2,12 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <Nullable>enable</Nullable>
+    <!--<Nullable>true</Nullable>-->
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="Models\Enums\" />
-    <Folder Include="Patches\" />
   </ItemGroup>
 
 	<Import Project="Dependencies.props" />

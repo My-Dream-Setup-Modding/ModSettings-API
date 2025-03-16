@@ -7,7 +7,7 @@
 
 	<!--Plugin Metadata-->
 	<PropertyGroup>
-		<PluginName>MoreSettings</PluginName>
+		<PluginName>ModSettingsApi</PluginName>
 		<AssemblyName>$(PluginName)</AssemblyName>
 		<Version>1.0.0</Version>
 		<CopyBuildToPluginFolder>true</CopyBuildToPluginFolder>
@@ -39,6 +39,7 @@
 	<PropertyGroup Condition="Exists('$(ManagedFolder)\Assembly-CSharp_publicized.dll')">
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
+	<!--Activating unsafe code, for ignoring private access modifiers-->
 	<ItemGroup Condition="Exists('$(ManagedFolder)\Assembly-CSharp_publicized.dll')">
 		<Reference Remove="$(ManagedFolder)\Assembly-CSharp.dll"/>
 	</ItemGroup>

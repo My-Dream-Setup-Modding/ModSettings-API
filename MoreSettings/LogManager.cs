@@ -1,9 +1,10 @@
 ﻿using BepInEx.Logging;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace MoreSettings
+namespace ModSettingsApi
 {
     internal static class LogManager
     {
@@ -37,6 +38,13 @@ namespace MoreSettings
         public static void Warn(object msg)
         {
             logger.LogWarning(msg);
+        }
+
+        internal static void CategoryMessage([CallerMemberName] string category = "unknown???")
+        {
+            logger.LogMessage($"=======================================================================");
+            logger.LogMessage(category);
+            logger.LogMessage($"=======================================================================");
         }
     }
 }
