@@ -1,12 +1,13 @@
-﻿namespace ModSettingsApi.Models.Variants
+﻿namespace ModSettingsApi.Models.Enums
 {
     public enum SettingsVariant
     {
-        OnAndOffSwitch,
+        Button,
+        ToggleButton,
         ListNavigator,
         Slider,
         TextInput,
-        Button
+        
         //TODO Some type of ComboBox would be quite good.
     }
 }

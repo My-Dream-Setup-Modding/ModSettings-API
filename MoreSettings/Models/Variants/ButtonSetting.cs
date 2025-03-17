@@ -1,15 +1,19 @@
-﻿namespace ModSettingsApi.Models.Variants
+﻿using ModSettingsApi.Models.Enums;
+
+namespace ModSettingsApi.Models.Variants
 {
-    public abstract class ButtonSetting : SettingsModel<string>
+    public class ButtonSetting : ISingleSettingModel
     {
-        public string Value { get; set; }
+        public delegate void ButtonClick();
+
         public SettingsVariant Variant => SettingsVariant.Button;
-
-        protected ButtonSetting()
+        public string SettingsName { get; set; }
+        public ButtonClick Click { get; set; }
+        
+        public ButtonSetting(string settingsName, ButtonClick click)
         {
-            
+            SettingsName = settingsName;
+            Click = click;
         }
-
-        public abstract void Click();
     }
 }

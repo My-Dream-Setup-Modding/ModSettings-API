@@ -22,7 +22,7 @@ namespace ModSettingsApi
 
         public static void Debug(object msg)
         {
-            logger.LogDebug(msg);
+            logger.LogMessage(msg);
         }
 
         public static void Message(object msg)

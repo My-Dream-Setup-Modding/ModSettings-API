@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using ModSettingsApi.Manager;
+using ModSettingsApi.Models;
 
 namespace ModSettingsApi.Api
 {
@@ -10,5 +9,13 @@ namespace ModSettingsApi.Api
     public static class ModSettingsApi
     {
         //public static void AddBase
+        /// <summary>
+        /// Adds <paramref name="modSettings"/> to the ModSettings menu.
+        /// Settings will be sorted alphabetically, for a more constant experience.
+        /// </summary>
+        public static void AddMod(TabModel modSettings)
+        {
+            SettingsManager.AddModTab(modSettings);
+        }
     }
 }

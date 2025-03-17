@@ -5,10 +5,6 @@
     <!--<Nullable>true</Nullable>-->
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\Enums\" />
-  </ItemGroup>
-
 	<Import Project="Dependencies.props" />
 	
 </Project>
