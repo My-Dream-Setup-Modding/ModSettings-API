@@ -1,4 +1,5 @@
 ﻿using ModSettingsApi.Models.Enums;
+using UnityEngine.Events;
 
 namespace ModSettingsApi.Models.Variants
 {
@@ -9,13 +10,16 @@ namespace ModSettingsApi.Models.Variants
         public string SettingsName { get; }
         public SettingsVariant Variant => SettingsVariant.ToggleButton;
         public bool CurrentValue { get; set; }
-        public DelegateValueChanged ValueChanged { get; }
+        public UnityAction ValueChanged { get; }
 
-        public ToggleButtonSetting(string settingsName, DelegateValueChanged valueChanged, bool defaultValue = false)
+        public ToggleButtonSetting(string settingsName, UnityAction valueChanged, bool defaultValue = false)
         {
             SettingsName = settingsName;
             ValueChanged = valueChanged;
             CurrentValue = defaultValue;
         }
+
+
+
     }
 }

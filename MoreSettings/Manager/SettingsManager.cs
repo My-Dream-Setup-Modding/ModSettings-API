@@ -17,6 +17,7 @@ namespace ModSettingsApi.Manager
     internal partial class SettingsManager
     {
         private static SettingsManager _instance;
+        private static PanelUiManager _panelManager;
         private static bool _initialized;
 
         private readonly MainMenuUI _ui;
@@ -67,7 +68,6 @@ namespace ModSettingsApi.Manager
             _vanillaSettingsText = _ui.gameObject.GetComponentsInChildren<TextMeshProUGUI>().FirstOrDefault(x => x.gameObject.name == "SettingsText");
 
             BuildModSettingsButton();
-            BuildModdedPanel();
 
             _moddedButton.onClick.AddListener(ToggleModSettings);
         }
@@ -80,34 +80,58 @@ namespace ModSettingsApi.Manager
             var test = _panel.GetComponent<HorizontalLayoutGroup>();
         }
 
-        public void OpenModSettings()
-        {
-            _ui.CloseRoomSelection();
-            _ui.CloseWorkshop();
-            _ui.CloseCredits();
-            _ui.HideNews();
-            _ui.CloseSettings();
-            _modSettingsOpened = true;
-            _panel.transform.DOKill();
-            _panel.transform.DOScale(1.1f, 0.25f).
-                OnComplete<TweenerCore<Vector3, Vector3, VectorOptions>>(
-                () => _panel.transform.DOScale(1f, 0.1f));
-        }
-
-        public void CloseModSettings()
-        {
-            _ui.ShowNews();
-            _modSettingsOpened = false;
-            _panel.transform.DOKill();
-            _panel.transform.DOScale(0.0f, 0.25f);
-        }
-
         private void ToggleModSettings()
         {
+            if (_panelManager is null)
+                _panelManager = new PanelUiManager(_ui);
+
             if(_modSettingsOpened)
-                CloseModSettings();
+                _panelManager.OpenPanel();
             else
-                OpenModSettings();
+                _panelManager.ClosePanel();
+
+            _modSettingsOpened = !_modSettingsOpened;
+        }
+
+        /// <summary>
+        /// Generate the ModSettings Button in the MainMenu.
+        /// </summary>
+        private void BuildModSettingsButton()
+        {
+            _moddedButton = _ui.openSettingsButton.gameObject.Instantiate<Button>("ModSettingsOpenButton");
+            _moddedText = _vanillaSettingsText.gameObject.Instantiate<TextMeshProUGUI>("ModSettingsText");
+
+            LogManager.Message($"Changing ModSettings Text Fontsize from {_moddedText.fontSize} to 44");
+            _moddedText.fontSize = 44;
+            _moddedText.SetText("ModSettings");
+
+            var rectOpen = _vanillaSettingsButton.GetComponent<RectTransform>();
+            var rextTextOpen = _vanillaSettingsText.GetComponent<RectTransform>();
+            var rectModOpen = _moddedButton.GetComponent<RectTransform>();
+            var rectModTextOpen = _moddedText.GetComponent<RectTransform>();
+
+            //This RectTransform is from the rooms button one row above the settings Button.
+            //Used to calculate how much space is normally left beween two buttons.
+            var roomsRect = _ui.openRoomSelectionButton.GetComponent<RectTransform>();
+
+            //Calculating and moving stuff to the right position.
+            var diffBetweenButtons = roomsRect.position.y - roomsRect.sizeDelta.y - rectOpen.position.y;
+            var margin = diffBetweenButtons / 2;
+
+            var fullLength = rectOpen.sizeDelta.x;
+
+            var singleLength = fullLength / 2 - margin;
+            LogManager.Message($"pixels between buttons: {diffBetweenButtons}, button length is: {fullLength}, singleLength: {singleLength}");
+
+            rectOpen.sizeDelta = new Vector2(singleLength, rectOpen.sizeDelta.y);
+            rextTextOpen.sizeDelta = new Vector2(singleLength, rextTextOpen.sizeDelta.y);
+            rectModOpen.sizeDelta = new Vector2(singleLength, rectModOpen.sizeDelta.y);
+            rectModTextOpen.sizeDelta = new Vector2(singleLength, rectModTextOpen.sizeDelta.y);
+
+            rectOpen.position = new Vector3(rectOpen.position.x - (singleLength / 2 + margin), rectOpen.position.y, rectOpen.position.z);
+            rextTextOpen.position = new Vector3(rextTextOpen.position.x - (singleLength / 2 + margin), rextTextOpen.position.y, rextTextOpen.position.z);
+            rectModOpen.position = new Vector3(rectModOpen.position.x + (singleLength / 2 + margin), rectModOpen.position.y, rectModOpen.position.z);
+            rectModTextOpen.position = new Vector3(rectModTextOpen.position.x + (singleLength / 2 + margin), rectModTextOpen.position.y, rectModTextOpen.position.z);
         }
     }
 }

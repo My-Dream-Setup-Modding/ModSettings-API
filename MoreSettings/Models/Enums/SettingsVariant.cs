@@ -2,11 +2,12 @@
 {
     public enum SettingsVariant
     {
-        Button,
+        //TODO Button Setting.
+        //Button,
         ToggleButton,
         ListNavigator,
         Slider,
-        TextInput,
+        //TextInput,
         
         //TODO Some type of ComboBox would be quite good.
     }
