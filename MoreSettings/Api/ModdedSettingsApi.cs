@@ -6,7 +6,7 @@ namespace ModSettingsApi.Api
     /// <summary>
     /// An API to allow mods, to inject their own settings window easily into MDS.
     /// </summary>
-    public static class ModSettingsApi
+    public static class ModdedSettingsApi
     {
         //public static void AddBase
         /// <summary>

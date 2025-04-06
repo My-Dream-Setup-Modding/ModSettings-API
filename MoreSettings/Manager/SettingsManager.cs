@@ -54,6 +54,7 @@ namespace ModSettingsApi.Manager
         {
             if (_initialized)
                 throw new Exception("SettingsManager is already initialized!");
+
             Instance = new SettingsManager(ui);
             Instance.Init();
         }
@@ -83,9 +84,9 @@ namespace ModSettingsApi.Manager
         private void ToggleModSettings()
         {
             if (_panelManager is null)
-                _panelManager = new PanelUiManager(_ui);
+                _panelManager = new PanelUiManager(_ui, Tabs);
 
-            if(_modSettingsOpened)
+            if(!_modSettingsOpened)
                 _panelManager.OpenPanel();
             else
                 _panelManager.ClosePanel();

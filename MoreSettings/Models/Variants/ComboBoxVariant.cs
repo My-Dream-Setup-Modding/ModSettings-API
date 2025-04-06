@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ModSettingsApi.Models.Variants
 {
-    public class ListNavigatorSetting
+    public class ComboBoxVariant
     {
     }
 }

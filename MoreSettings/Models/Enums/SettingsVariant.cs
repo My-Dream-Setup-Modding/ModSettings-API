@@ -3,8 +3,9 @@
     public enum SettingsVariant
     {
         //TODO Button Setting.
-        //Button,
+        Button,
         ToggleButton,
+        ComboBox,
         ListNavigator,
         Slider,
         //TextInput,

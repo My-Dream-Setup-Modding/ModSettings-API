@@ -13,12 +13,6 @@ namespace ModSettingsApi.Manager
             Tabs.Sort();
 
             LogManager.Debug("New tab got added to the modded settings.");
-
-            if (_instance != null)
-            {
-                
-                //rebuild existing settings tab.
-            }
         }
     }
 }

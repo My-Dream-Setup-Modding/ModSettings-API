@@ -1,8 +1,8 @@
 ﻿using BepInEx.Logging;
 using BepInEx;
 using HarmonyLib;
-using ModSettingsApi.Models;
 using ModSettingsApi.Patches;
+using ModSettingsApi.Manager;
 
 namespace ModSettingsApi
 {
@@ -11,7 +11,7 @@ namespace ModSettingsApi
     {
         public const string
         MODNAME = "ModSettingsApi",
-        AUTHOR = "Endskill",
+        AUTHOR = "Edsil",
         GUID = AUTHOR + "." + MODNAME,
         VERSION = "1.0.0";
 
@@ -22,6 +22,8 @@ namespace ModSettingsApi
         {
             Log = Logger;
             ModSettingsApiHarmony.PatchAll(typeof(MainMenuUiPatches));
+
+            TestDataManager.Init();
         }
     }
 }
