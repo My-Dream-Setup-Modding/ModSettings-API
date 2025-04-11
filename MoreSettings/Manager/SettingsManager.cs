@@ -1,11 +1,5 @@
-﻿using DG.Tweening;
-using DG.Tweening.Core;
-using DG.Tweening.Plugins.Options;
-using System;
-using System.Collections.Generic;
-using System.EnterpriseServices;
+﻿using System;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using TMPro;
 using UI.CustomElements.Tabs.SettingsTabs;
 using UI.MainMenu;
@@ -118,7 +112,7 @@ namespace ModSettingsApi.Manager
             //Calculating and moving stuff to the right position.
             var diffBetweenButtons = roomsRect.position.y - roomsRect.sizeDelta.y - rectOpen.position.y;
             var margin = diffBetweenButtons / 2;
-
+             
             var fullLength = rectOpen.sizeDelta.x;
 
             var singleLength = fullLength / 2 - margin;

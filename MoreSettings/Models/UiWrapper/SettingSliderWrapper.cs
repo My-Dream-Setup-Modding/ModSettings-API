@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace ModSettingsApi.Models.Ui
 {
-    public class SettingSliderWrapper : BaseSetting<SliderVariant>
+    public class SettingSliderWrapper : BaseSetting<SliderVariant, SettingSliderWrapper>
     {
         public SettingSliderWrapper(GameObject managedGameObject)
         {
@@ -16,7 +16,7 @@ namespace ModSettingsApi.Models.Ui
             _text = _managedGameObject.transform.Find("Music").GetComponent<TextMeshProUGUI>();
         }
 
-        public override GameObject Instatiate(Transform parent, SliderVariant settingModel)
+        public override SettingSliderWrapper Instatiate(Transform parent, SliderVariant settingModel)
         {
             throw new NotImplementedException();
         }

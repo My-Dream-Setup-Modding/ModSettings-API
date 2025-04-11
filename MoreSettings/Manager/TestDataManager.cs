@@ -1,9 +1,7 @@
 ﻿using ModSettingsApi.Api;
 using ModSettingsApi.Models;
 using ModSettingsApi.Models.Variants;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ModSettingsApi.Manager
 {
@@ -15,7 +13,15 @@ namespace ModSettingsApi.Manager
         public static void Init()
         {
             var lst = new List<IVariant>();
-            lst.Add(new ToggleButtonVariant("TestToggle", ToggleChangedTest, true));
+            //lst.Add(new ToggleButtonVariant("TestToggle", ToggleChangedTest, true));
+            var test = new ComboBoxVariant("TestCombo", ComboValueChanged, new List<ComboBoxOptionData>()
+            {
+                new ComboBoxOptionData("Option_1"),
+                new ComboBoxOptionData("Option_2"),
+                new ComboBoxOptionData("Option_3"),
+                new ComboBoxOptionData("Option_4")
+            });
+            lst.Add(test);
             var settingsData = new TabModel("TestData Mod", lst);
 
             ModdedSettingsApi.AddMod(settingsData);
@@ -24,6 +30,11 @@ namespace ModSettingsApi.Manager
         private static void ToggleChangedTest(bool newValue)
         {
             LogManager.Message($"TestDataManager: Toggle changed, new Value: {newValue}");
+        }
+
+        private static void ComboValueChanged(ComboBoxOptionData data)
+        {
+            LogManager.Message($"TestDataManager: Combo value changed, new Value: {data.Text}");
         }
     }
 }

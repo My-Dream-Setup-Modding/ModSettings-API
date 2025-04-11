@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace ModSettingsApi.Models.Ui
 {
-    public class SettingToggleButtonWrapper : BaseSetting<ToggleButtonVariant>
+    public class SettingToggleButtonWrapper : BaseSetting<ToggleButtonVariant, SettingToggleButtonWrapper>
     {
         public SettingToggleButtonWrapper(GameObject managedGameObject)
         {
@@ -16,9 +16,9 @@ namespace ModSettingsApi.Models.Ui
             _text = _managedGameObject.GetComponentInChildren<TextMeshProUGUI>();
         }
 
-        public override GameObject Instatiate(Transform parent, ToggleButtonVariant settingModel)
+        public override SettingToggleButtonWrapper Instatiate(Transform parent, ToggleButtonVariant settingModel)
         {
-            
+            return null;
         }
     }
 }

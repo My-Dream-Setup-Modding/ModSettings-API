@@ -1,4 +1,5 @@
-﻿using BepInEx.Logging;
+﻿using BepInEx.Configuration;
+using BepInEx.Logging;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -9,6 +10,7 @@ namespace ModSettingsApi
     internal static class LogManager
     {
         private static readonly ManualLogSource logger;
+        static internal bool DebugActive { get; set; } = true;
 
         static LogManager()
         {
@@ -22,7 +24,8 @@ namespace ModSettingsApi
 
         public static void Debug(object msg)
         {
-            logger.LogMessage(msg);
+            if (DebugActive)
+                logger.LogMessage(msg);
         }
 
         public static void Message(object msg)

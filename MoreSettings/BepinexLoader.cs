@@ -23,6 +23,9 @@ namespace ModSettingsApi
             Log = Logger;
             ModSettingsApiHarmony.PatchAll(typeof(MainMenuUiPatches));
 
+            //LogManager.DebugActive = Config.Bind<bool>("Development", "DebugMessages", false, "If this mod writes debug Messages, " +
+            //    "mainly used for PrintF Debugging.");
+
             TestDataManager.Init();
         }
     }

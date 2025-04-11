@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace ModSettingsApi.Models.UiWrapper
 {
-    public abstract class BaseSetting<T> where T : IVariant
+    public abstract class BaseSetting<T, ParentSetting> : IBaseSetting 
+        where T : IVariant where ParentSetting : IBaseSetting
     {
         protected TextMeshProUGUI _text;
         protected GameObject _managedGameObject;
@@ -15,6 +16,12 @@ namespace ModSettingsApi.Models.UiWrapper
             _text.SetText(text);
         }
 
-        public abstract GameObject Instatiate(Transform parent, T settingModel);
+        public abstract ParentSetting Instatiate(Transform parent, T settingModel);
+    }
+
+    public interface IBaseSetting
+    {
+        GameObject ManagedGameObject { get; }
+        void SetSettingText(string text);
     }
 }

@@ -10,7 +10,7 @@ namespace ModSettingsApi.Models.Variants
 {
     public class ListNavigatorVariant : IVariant
     {
-        public string SettingsName { get; }
+        public string SettingsText { get; }
         public SettingsVariant Variant => SettingsVariant.ToggleButton;
         public bool CurrentValue { get; set; }
 

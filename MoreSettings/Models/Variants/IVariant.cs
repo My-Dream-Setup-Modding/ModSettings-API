@@ -6,7 +6,7 @@ namespace ModSettingsApi.Models.Variants
 {
     public interface IVariant
     {
-        public string SettingsName { get; }
+        public string SettingsText { get; }
         public SettingsVariant Variant { get; }
 
         /// <summary>

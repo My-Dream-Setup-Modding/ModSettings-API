@@ -8,13 +8,15 @@ namespace ModSettingsApi.Models.UiWrapper
     /// <summary>
     /// Wrapper to handle most ui interactions with the gameobjects.
     /// </summary>
-    public class SettingTextBoxWrapper : BaseSetting<TextBoxVariant>
+    public class SettingTextBoxWrapper : BaseSetting<TextBoxVariant, SettingTextBoxWrapper>
     {
         public SettingTextBoxWrapper(SettingSliderWrapper existingWrapper, GameObject existingTextBox)
         {
+            _managedGameObject = new GameObject("Custom_ButtonSetting");
+            
         }
 
-        public override GameObject Instatiate(Transform parent, TextBoxVariant settingModel)
+        public override SettingTextBoxWrapper Instatiate(Transform parent, TextBoxVariant settingModel)
         {
             throw new System.NotImplementedException();
         }

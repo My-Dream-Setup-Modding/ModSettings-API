@@ -18,6 +18,7 @@ using Sirenix.Utilities;
 using Button = UnityEngine.UI.Button;
 using ModSettingsApi.Models.Ui;
 using ModSettingsApi.Models.UiWrapper;
+using System.Linq;
 
 namespace ModSettingsApi.Manager
 {
@@ -50,7 +51,13 @@ namespace ModSettingsApi.Manager
         /// </summary>mich ärg
         public static PanelUiManager Instance { get; set; }
 
-        public Dictionary<TabModel, GameObject> Views { get; set; } = new Dictionary<TabModel, GameObject>();
+        public Dictionary<TabModel, GameObject> Views { get; set; } 
+            = new Dictionary<TabModel, GameObject>();
+        
+        /// <summary>
+        /// A mod to used ui settings wrapper map, mainly used to help debugging via unityexplorer.
+        /// </summary>
+        public Dictionary<TabModel, List<object>> DebugComponentList { get; set; } = new Dictionary<TabModel, List<object>>();
 
         public PanelUiManager(MainMenuUI gameUi, List<TabModel> modsToRender)
         {
@@ -64,7 +71,11 @@ namespace ModSettingsApi.Manager
         public void OpenPanel()
         {
             if (!_initialized)
+            {
                 Initialize();
+                BuildView();
+                _initialized = true;
+            }
 
             _ui.CloseRoomSelection();
             _ui.CloseWorkshop();
@@ -86,54 +97,6 @@ namespace ModSettingsApi.Manager
             //_panel.transform.DOKill();
             _panel.transform.DOScale(0.0f, 0.25f);
         }
-
-        private void BuildModdedViews()
-        {
-            LogManager.Message("BuildModdedViews.");
-            foreach (var view in Views)
-            {
-                var mod = view.Key;
-                var ui = view.Value;
-
-                foreach (var iSetting in mod.Settings)
-                {
-                    switch (iSetting.Variant)
-                    {
-                        case Models.Enums.SettingsVariant.Button:
-                            //var btnSetting = (ButtonSetting)iSetting;
-
-                            break;
-                        case Models.Enums.SettingsVariant.ToggleButton:
-                            var togSetting = (ToggleButtonVariant)iSetting;
-                            _uiToggleButton.Instatiate(ui.transform, togSetting);
-
-                            //var toggle = MakeToggleButton(setting);
-                            //toggle.transform.SetParent(ui.transform);
-                            //var toggleButton = _uiToggleButton.Instantiate<RectTransform>($"{mod.ModName}_{setting.SettingsName}");
-                            //toggleButton.transform.SetParent(ui.transform);
-
-
-
-                            break;
-                        case Models.Enums.SettingsVariant.Slider:
-                            break;
-                        case Models.Enums.SettingsVariant.ComboBox:
-                            break;
-                        case Models.Enums.SettingsVariant.ListNavigator:
-                            break;
-                    }
-                }
-            }
-        }
-
-        //private RectTransform MakeToggleButton(ToggleButtonVariant setting)
-        //{
-        //    var toggleButton = _uiToggleButton.Instantiate<RectTransform>($"{((IVariant)setting).ParentMod.ModName}_{setting.SettingsName}");
-        //    var toggle = toggleButton.GetComponentInChildren<UnityEngine.UI.Toggle>();
-        //    toggle.onValueChanged = setting.ValueChanged;
-
-        //    return null;
-        //}
 
         private void Initialize()
         {
@@ -162,7 +125,7 @@ namespace ModSettingsApi.Manager
                         _tabButton.GetComponentInChildren<TextMeshProUGUI>().SetText("Modded Tab");
                         var btn = _tabButton.GetComponent<Button>();
                         btn.onClick = new Button.ButtonClickedEvent();
-                        btn.onClick.AddListener(OpenModSelektorTab);
+                        btn.onClick.AddListener(()=> OpenMod(Views.First().Key));
 
                         break;
                     default:
@@ -209,7 +172,7 @@ namespace ModSettingsApi.Manager
                             LogManager.Warn($"Adding settings view for {mod.ModName}");
 
                             var modView = CreateModView(generalView, $"ModView_{mod.ModName}");
-                            settingApiTab.Settings.Add(new ButtonVariant(mod.ModName, ))
+                            settingApiTab.Settings.Add(new ButtonVariant(mod.ModName, OpenMod));
                             Views.Add(mod, modView.gameObject);
                         }
 
@@ -281,15 +244,24 @@ namespace ModSettingsApi.Manager
 
             var existingbutton = _ui.workshopPanel.Find("FurnitureUpload/ModelUpload");
             _uiButton = new SettingButtonWrapper(_uiSlider, existingbutton.gameObject);
-
-            BuildModdedViews();
-
-            _initialized = true;
         }
 
-        private void OpenModSelektorTab()
+        private void OpenMod(ButtonVariant sender)
         {
-            LogManager.Message("OpenModSelektorTab called.");
+            LogManager.Message($"Button Click from sender {sender.SettingsText}");
+            IVariant variant = sender as IVariant;
+            OpenMod(variant.ParentMod);
+        }
+
+        private void OpenMod(TabModel modToOpen)
+        {
+            var modView = Views[modToOpen];
+            foreach (var view in Views)
+            {
+                view.Value.SetActive(view.Key == modToOpen);
+            }
+
+            ////TODO TabHeader with Splitters logic.
         }
     }
 }
