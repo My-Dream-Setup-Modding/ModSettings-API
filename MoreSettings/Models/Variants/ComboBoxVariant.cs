@@ -34,6 +34,9 @@ namespace ModSettingsApi.Models.Variants
 
         internal void ValueHasChanged(int index)
         {
+            if (CurrentValue != Settings[index])
+                return;
+
             CurrentValue = Settings[index];
             ValueChanged(CurrentValue);
         }

@@ -9,6 +9,7 @@ namespace ModSettingsApi.Models.Ui
 {
     public class SettingComboBoxWrapper : BaseSetting<ComboBoxVariant, SettingComboBoxWrapper>
     {
+        private readonly TextMeshProUGUI _text;
         private readonly TMP_Dropdown _dropDown;
 
         public SettingComboBoxWrapper(GameObject managedGameObject)
@@ -23,10 +24,10 @@ namespace ModSettingsApi.Models.Ui
             var gmObj = GameObject.Instantiate(ManagedGameObject, parent);
             gmObj.name = $"{((IVariant)settingModel).ParentMod.ModName}_Combo_{settingModel.SettingsText}";
             var combo = new SettingComboBoxWrapper(gmObj);
+            //Switching to the copied gameobject context.
             return combo.Instantiate(settingModel);
         }
 
-        //Switching to the copied gameobject context.
         private SettingComboBoxWrapper Instantiate(ComboBoxVariant settingModel)
         {
             _dropDown.options.Clear();
@@ -43,7 +44,7 @@ namespace ModSettingsApi.Models.Ui
             _dropDown.onValueChanged = new TMP_Dropdown.DropdownEvent();
             _dropDown.onValueChanged.AddListener(settingModel.ValueHasChanged);
 
-            SetSettingText(settingModel.SettingsText);
+            _text.SetText(settingModel.SettingsText);
 
             return this;
         }

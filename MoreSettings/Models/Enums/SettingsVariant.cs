@@ -8,7 +8,7 @@
         ComboBox,
         ListNavigator,
         Slider,
-        //TextInput,
+        TextInput,
         
         //TODO Some type of ComboBox would be quite good.
     }

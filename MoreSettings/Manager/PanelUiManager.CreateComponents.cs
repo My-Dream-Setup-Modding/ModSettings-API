@@ -1,9 +1,6 @@
 ﻿using ModSettingsApi.Models;
-using ModSettingsApi.Models.UiWrapper;
 using ModSettingsApi.Models.Variants;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -40,20 +37,14 @@ namespace ModSettingsApi.Manager
                     switch (iSetting.Variant)
                     {
                         case Models.Enums.SettingsVariant.Button:
-                            LogManager.Warn($"Button not implemented yet.");
-                            break;
                             var button = _uiButton.Instatiate(ui.transform, (ButtonVariant)iSetting);
                             debugCompList.Add(button);
                             break;
                         case Models.Enums.SettingsVariant.ToggleButton:
-                            LogManager.Warn($"ToggleButton not implemented yet.");
-                            break;
                             var toggle = _uiToggleButton.Instatiate(ui.transform, (ToggleButtonVariant)iSetting);
                             debugCompList.Add(toggle);
                             break;
                         case Models.Enums.SettingsVariant.Slider:
-                            LogManager.Warn($"Slider not implemented yet.");
-                            break;
                             var slider = _uiSlider.Instatiate(ui.transform, (SliderVariant)iSetting);
                             debugCompList.Add(slider);
                             break;
@@ -63,6 +54,9 @@ namespace ModSettingsApi.Manager
                             break;
                         case Models.Enums.SettingsVariant.ListNavigator:
                             LogManager.Warn($"ListNavigator not implemented yet.");
+                            break;
+                        case Models.Enums.SettingsVariant.TextInput:
+                            var textBox = _uiTextBox.Instatiate(ui.transform, (TextBoxVariant)iSetting);
                             break;
                     }
                 }

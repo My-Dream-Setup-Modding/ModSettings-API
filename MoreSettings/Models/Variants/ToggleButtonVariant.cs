@@ -10,7 +10,7 @@ namespace ModSettingsApi.Models.Variants
         public string SettingsText { get; }
         public SettingsVariant Variant => SettingsVariant.ToggleButton;
         public bool CurrentValue { get; set; }
-        public ToggleEvent ValueChanged { get; } = new ToggleEvent();
+        public UnityAction<bool> ValueChanged { get; }
 
         /// <inheritdoc/>
         [IgnoreDataMember]
@@ -19,8 +19,17 @@ namespace ModSettingsApi.Models.Variants
         public ToggleButtonVariant(string settingsName, UnityAction<bool> valueChanged, bool defaultValue = false)
         {
             SettingsText = settingsName;
-            ValueChanged.AddListener(valueChanged);
+            ValueChanged = valueChanged;
             CurrentValue = defaultValue;
+        }
+
+        internal void OnValueHasChanged(bool newValue)
+        {
+            if (CurrentValue == newValue)
+                return;
+
+            CurrentValue = newValue;
+            ValueChanged?.Invoke(newValue);
         }
     }
 }

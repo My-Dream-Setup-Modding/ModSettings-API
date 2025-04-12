@@ -1,8 +1,5 @@
 ﻿using ModSettingsApi.Models.UiWrapper;
 using ModSettingsApi.Models.Variants;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using TMPro;
 using UnityEngine;
 
@@ -10,6 +7,8 @@ namespace ModSettingsApi.Models.Ui
 {
     public class SettingSliderWrapper : BaseSetting<SliderVariant, SettingSliderWrapper>
     {
+        private readonly TextMeshProUGUI _text;
+
         public SettingSliderWrapper(GameObject managedGameObject)
         {
             _managedGameObject = managedGameObject;
@@ -18,7 +17,7 @@ namespace ModSettingsApi.Models.Ui
 
         public override SettingSliderWrapper Instatiate(Transform parent, SliderVariant settingModel)
         {
-            throw new NotImplementedException();
+            return null;
         }
     }
 }

@@ -172,7 +172,7 @@ namespace ModSettingsApi.Manager
                             LogManager.Warn($"Adding settings view for {mod.ModName}");
 
                             var modView = CreateModView(generalView, $"ModView_{mod.ModName}");
-                            settingApiTab.Settings.Add(new ButtonVariant(mod.ModName, OpenMod));
+                            settingApiTab.Settings.Add(new ButtonVariant(mod.ModName, "Open", OpenMod));
                             Views.Add(mod, modView.gameObject);
                         }
 
@@ -239,11 +239,11 @@ namespace ModSettingsApi.Manager
             }
 
             //TODO Build a button 
-            var existingTextBox = _ui.workshopPanel.Find("FurnitureUpload/FilePath");
-            _uiTextBox = new SettingTextBoxWrapper(_uiSlider, existingTextBox.gameObject);
+            var existingTextBox = _ui.workshopPanel.Find("FurnitureUpload/WorkshopTitle");
+            _uiTextBox = SettingTextBoxWrapper.Create(_uiToggleButton, existingTextBox.gameObject);
 
-            var existingbutton = _ui.workshopPanel.Find("FurnitureUpload/ModelUpload");
-            _uiButton = new SettingButtonWrapper(_uiSlider, existingbutton.gameObject);
+            var existingbutton = _ui.workshopPanel.Find("FurnitureUpload/UploadToWorkshop");
+            _uiButton = SettingButtonWrapper.Create(_uiToggleButton, existingbutton.gameObject);
         }
 
         private void OpenMod(ButtonVariant sender)
