@@ -4,6 +4,7 @@ using ModSettingsApi.Models.Variants;
 using TMPro;
 using Unity.Burst.Intrinsics;
 using UnityEngine;
+using static TMPro.TMP_Dropdown;
 
 namespace ModSettingsApi.Models.Ui
 {
@@ -35,7 +36,8 @@ namespace ModSettingsApi.Models.Ui
             for (int i = 0; i < settingModel.Settings.Count; i++)
             {
                 var setting = settingModel.Settings[i];
-                _dropDown.options.Add(setting);
+                var dropDownData = new OptionData(setting.Text, setting.Image);
+                _dropDown.options.Add(dropDownData);
 
                 if (setting == settingModel.CurrentValue)
                     _dropDown.value = i;

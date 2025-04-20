@@ -4,6 +4,7 @@ using HarmonyLib;
 using ModSettingsApi.Patches;
 using ModSettingsApi.Manager;
 using UnityEngine;
+using BepInEx.Configuration;
 
 namespace ModSettingsApi
 {
@@ -31,7 +32,7 @@ namespace ModSettingsApi
             //    "mainly used for PrintF Debugging.");
 
             TestDataManager.Init();
-            DebugModManager.Init();
+            DebugModManager.Init(Config);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using ModSettingsApi.Api;
+﻿using BepInEx.Configuration;
+using ModSettingsApi.Api;
 using ModSettingsApi.Models;
 using ModSettingsApi.Models.Variants;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace ModSettingsApi.Manager
         {
             var lst = new List<IVariant>();
             lst.Add(new ToggleButtonVariant("TestToggle", ToggleChangedTest, true));
-            var test = new ComboBoxVariant("TestCombo", ComboValueChanged, new List<ComboBoxOptionData>()
+            var test = new ComboBoxVariant("TestCombo", ComboValueChanged, new List<IComboBoxData>()
             {
                 new ComboBoxOptionData("Option_1"),
                 new ComboBoxOptionData("Option_2"),
@@ -41,7 +42,7 @@ namespace ModSettingsApi.Manager
             LogManager.Message($"TestDataManager: Toggle changed, new Value: {newValue}");
         }
 
-        private static void ComboValueChanged(ComboBoxOptionData data)
+        private static void ComboValueChanged(IComboBoxData data)
         {
             LogManager.Message($"TestDataManager: Combo value changed, new Value: {data.Text}");
         }
@@ -61,7 +62,7 @@ namespace ModSettingsApi.Manager
         {
             var lst = new List<IVariant>();
             lst.Add(new ToggleButtonVariant("DebugToggle", ToggleChangedDebug, true));
-            var Debug = new ComboBoxVariant("DebugCombo", ComboValueChanged, new List<ComboBoxOptionData>()
+            var Debug = new ComboBoxVariant("DebugCombo", ComboValueChanged, new List<IComboBoxData>()
             {
                 new ComboBoxOptionData("Debug_1"),
                 new ComboBoxOptionData("Debug_2"),
@@ -73,7 +74,6 @@ namespace ModSettingsApi.Manager
             //lst.Add(new SliderVariant("SliderOption"));
             lst.Add(new TextBoxVariant("TextBoxDebugOption", "GreyText", TextBoxHasChanged, "TextBoxDefaultValue"));
             var settingsData = new TabModel("DebugData Mod", lst);
-
 
             ModdedSettingsApi.AddMod(settingsData);
         }
@@ -88,7 +88,7 @@ namespace ModSettingsApi.Manager
             LogManager.Message($"DebugDataManager: Toggle changed, new Value: {newValue}");
         }
 
-        private static void ComboValueChanged(ComboBoxOptionData data)
+        private static void ComboValueChanged(IComboBoxData data)
         {
             LogManager.Message($"DebugDataManager: Combo value changed, new Value: {data.Text}");
         }
@@ -96,6 +96,13 @@ namespace ModSettingsApi.Manager
         private static void TextBoxHasChanged(string newValue)
         {
             LogManager.Message($"DebugDataManager: TextBox value changed, new Value: {newValue}");
+        }
+
+        public enum TestEnum
+        {
+            en1,
+            en2,
+            en3
         }
     }
 }

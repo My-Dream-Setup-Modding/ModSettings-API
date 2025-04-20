@@ -1,5 +1,4 @@
 ﻿using ModSettingsApi.Models.Enums;
-using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using UnityEngine.Events;
@@ -13,18 +12,18 @@ namespace ModSettingsApi.Models.Variants
     {
         public string SettingsText { get; }
         public SettingsVariant Variant => SettingsVariant.ComboBox;
-        public List<ComboBoxOptionData> Settings { get; }
-        public ComboBoxOptionData CurrentValue { get; private set; }
-        public virtual UnityAction<ComboBoxOptionData> ValueChanged { get; }
+        public List<IComboBoxData> Settings { get; }
+        public IComboBoxData CurrentValue { get; private set; }
+        public virtual UnityAction<IComboBoxData> ValueChanged { get; }
 
         /// <inheritdoc/>
         [IgnoreDataMember]
         TabModel IVariant.ParentMod { get; set; }
 
-        public ComboBoxVariant(string settingsName, UnityAction<ComboBoxOptionData> valueChanged, List<ComboBoxOptionData> settings) : this(settingsName, valueChanged, settings, settings.FirstOrDefault())
+        public ComboBoxVariant(string settingsName, UnityAction<IComboBoxData> valueChanged, List<IComboBoxData> settings) : this(settingsName, valueChanged, settings, settings.FirstOrDefault())
         { }
 
-        public ComboBoxVariant(string settingsName, UnityAction<ComboBoxOptionData> valueChanged, List<ComboBoxOptionData> settings, ComboBoxOptionData defaultValue)
+        public ComboBoxVariant(string settingsName, UnityAction<IComboBoxData> valueChanged, List<IComboBoxData> settings, IComboBoxData defaultValue)
         {
             Settings = settings;
             SettingsText = settingsName;
@@ -42,21 +41,21 @@ namespace ModSettingsApi.Models.Variants
         }
     }
 
-    public class ComboBoxOptionData
+    public class ComboBoxOptionData : IComboBoxData
     {
         public string Text { get; set; }
-
         public Sprite Image { get; set; }
 
         public ComboBoxOptionData(string text = null, Sprite image = null)
         {
             Text = text;
-            this.Image = image;
+            Image = image;
         }
+    }
 
-        public static implicit operator OptionData(ComboBoxOptionData data)
-        {
-            return new OptionData(data.Text, data.Image);
-        }
+    public interface IComboBoxData
+    {
+        public string Text { get; set; }
+        public Sprite Image { get; set; }
     }
 }
