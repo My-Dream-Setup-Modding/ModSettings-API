@@ -28,11 +28,19 @@ namespace ModSettingsApi
             Log = Logger;
             ModSettingsApiHarmony.PatchAll(typeof(MainMenuUiPatches));
 
+            var devLog = Config.Bind<bool>("Development", "DebugMessages", false, "If this mod writes debug Messages, mainly used for PrintF debugging.");
+            var devView = Config.Bind<bool>("Development", "DebugView", false, "If this mod creates test views");
+
+            LogManager.DebugActive = devLog.Value;
+
             //LogManager.DebugActive = Config.Bind<bool>("Development", "DebugMessages", false, "If this mod writes debug Messages, " +
             //    "mainly used for PrintF Debugging.");
 
-            TestDataManager.Init();
-            DebugModManager.Init(Config);
+            if (devView.Value)
+            {
+                TestDataManager.Init();
+                DebugModManager.Init();
+            }
         }
     }
 }

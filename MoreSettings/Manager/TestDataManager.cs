@@ -60,22 +60,22 @@ namespace ModSettingsApi.Manager
         /// </summary>
         public static void Init()
         {
-            var lst = new List<IVariant>();
-            lst.Add(new ToggleButtonVariant("DebugToggle", ToggleChangedDebug, true));
-            var Debug = new ComboBoxVariant("DebugCombo", ComboValueChanged, new List<IComboBoxData>()
+            var lst = new List<ModSettingsApi.Models.Variants.IVariant>();
+            lst.Add(new ModSettingsApi.Models.Variants.ToggleButtonVariant("DebugToggle", ToggleChangedDebug, true));
+            var combo = new ModSettingsApi.Models.Variants.ComboBoxVariant("DebugCombo", ComboValueChanged, new List<IComboBoxData>()
             {
-                new ComboBoxOptionData("Debug_1"),
-                new ComboBoxOptionData("Debug_2"),
-                new ComboBoxOptionData("Debug_3"),
-                new ComboBoxOptionData("Debug_4")
+                new ModSettingsApi.Models.Variants.ComboBoxOptionData("Debug_1"),
+                new ModSettingsApi.Models.Variants.ComboBoxOptionData("Debug_2"),
+                new ModSettingsApi.Models.Variants.ComboBoxOptionData("Debug_3"),
+                new ModSettingsApi.Models.Variants.ComboBoxOptionData("Debug_4")
             });
-            lst.Add(Debug);
-            lst.Add(new ButtonVariant("ButtonDebugOption", "BtnText", ButtonPressed));
+            lst.Add(combo);
+            lst.Add(new ModSettingsApi.Models.Variants.ButtonVariant("ButtonDebugOption", "BtnText", ButtonPressed));
             //lst.Add(new SliderVariant("SliderOption"));
-            lst.Add(new TextBoxVariant("TextBoxDebugOption", "GreyText", TextBoxHasChanged, "TextBoxDefaultValue"));
-            var settingsData = new TabModel("DebugData Mod", lst);
+            lst.Add(new ModSettingsApi.Models.Variants.TextBoxVariant("TextBoxDebugOption", "GreyText", TextBoxHasChanged, "TextBoxDefaultValue"));
+            var settingsData = new ModSettingsApi.Models.TabModel("DebugData Mod", lst);
 
-            ModdedSettingsApi.AddMod(settingsData);
+            ModSettingsApi.Api.ModdedSettingsApi.AddMod(settingsData);
         }
 
         public static void ButtonPressed(ButtonVariant sender)

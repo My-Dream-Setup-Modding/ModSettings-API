@@ -192,8 +192,6 @@ namespace ModSettingsApi.Manager
 
                         foreach (var mod in _modsToRender)
                         {
-                            LogManager.Warn($"Adding settings view for {mod.ModName}");
-
                             var modView = CreateModView(generalView, $"ModView_{mod.ModName}");
                             settingApiTab.Settings.Add(new ButtonVariant(mod.ModName, "Open", x => OpenModView(mod)));
                             Views.Add(mod, modView.gameObject);
@@ -201,7 +199,6 @@ namespace ModSettingsApi.Manager
 
                         //Destroy the old general Settings object.
                         UnityEngine.Object.Destroy(generalView.gameObject);
-
                         break;
 
                     case "Graphics":
