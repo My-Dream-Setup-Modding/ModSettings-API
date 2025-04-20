@@ -3,7 +3,8 @@ using System.Runtime.Serialization;
 
 namespace ModSettingsApi.Models.Variants
 {
-    public class SliderVariant : IVariant
+    //TODO Maybe add slider settings at some point.
+    internal class SliderVariant : IVariant
     {
         public string SettingsText { get; }
         public SettingsVariant Variant => SettingsVariant.Slider;

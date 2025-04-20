@@ -1,13 +1,15 @@
 ﻿using ModSettingsApi.Models.UiWrapper;
 using ModSettingsApi.Models.Variants;
 using TMPro;
+using UI.CustomElements.CustomSliders;
 using UnityEngine;
 
 namespace ModSettingsApi.Models.Ui
 {
-    public class SettingSliderWrapper : BaseSetting<SliderVariant, SettingSliderWrapper>
+    internal class SettingSliderWrapper : BaseSetting<SliderVariant, SettingSliderWrapper>
     {
         private readonly TextMeshProUGUI _text;
+        private readonly SliderValueDisplay _sliderDisplay;
 
         public SettingSliderWrapper(GameObject managedGameObject)
         {

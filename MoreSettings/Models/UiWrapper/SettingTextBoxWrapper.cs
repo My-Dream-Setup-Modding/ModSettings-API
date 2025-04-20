@@ -18,15 +18,15 @@ namespace ModSettingsApi.Models.UiWrapper
         {
             _managedGameObject = managedGameObject;
             _text = _managedGameObject.transform.Find("Full Screen").GetComponent<TextMeshProUGUI>();
-            _greyText = _managedGameObject.transform.Find("Text Area/Placeholder").GetComponent<TextMeshProUGUI>();
-            _textBox = _managedGameObject.GetComponent<TMP_InputField>();
+            _greyText = _managedGameObject.transform.Find("CustomTextBox/Text Area/Placeholder").GetComponent<TextMeshProUGUI>();
+            _textBox = _managedGameObject.transform.Find("CustomTextBox").GetComponent<TMP_InputField>();
         }
         
         public static SettingTextBoxWrapper Create(SettingToggleButtonWrapper existingWrapper, GameObject existingTextBox)
         {
 
             var gmObj = GameObject.Instantiate(existingWrapper.ManagedGameObject, existingWrapper.ManagedGameObject.transform.parent);
-            gmObj.name = $"Custom_ButtonSetting";
+            gmObj.name = $"Custom_TextBoxSetting";
 
             //Removing copied toggle components from ToggleButtonWrapper.
             var rightChild = gmObj.transform.Find("FullScreenToggle");
@@ -37,6 +37,8 @@ namespace ModSettingsApi.Models.UiWrapper
             textBox.name = "CustomTextBox";
             //x = 250 is the value used by 
             textBox.anchoredPosition = new Vector2(250, 0);
+            textBox.offsetMax = new Vector2(377f, 28.5f);
+            textBox.offsetMin = new Vector2(123, -28.5f);
 
             return new SettingTextBoxWrapper(gmObj);
         }
@@ -44,6 +46,7 @@ namespace ModSettingsApi.Models.UiWrapper
         public override SettingTextBoxWrapper Instatiate(Transform parent, TextBoxVariant settingModel)
         {
             var gmObj = GameObject.Instantiate(ManagedGameObject, parent);
+            gmObj.SetActive(true);
             gmObj.name = $"{((IVariant)settingModel).ParentMod.ModName}_TextBox_{settingModel.SettingsText}";
             var textBox = new SettingTextBoxWrapper(gmObj);
             //Switching to the copied gameobject context.
@@ -60,7 +63,7 @@ namespace ModSettingsApi.Models.UiWrapper
             _textBox.onValueChanged = new TMP_InputField.OnChangeEvent();
             _textBox.onValueChanged.AddListener(settingModel.TextHasChanged);
 
-            return null;
+            return this;
         }
     }
 }

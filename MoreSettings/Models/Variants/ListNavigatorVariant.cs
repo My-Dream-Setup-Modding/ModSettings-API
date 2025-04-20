@@ -1,14 +1,9 @@
 ﻿using ModSettingsApi.Models.Enums;
-using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
-using static ModSettingsApi.Models.Variants.ButtonVariant;
-using static UnityEngine.UI.Toggle;
 
 namespace ModSettingsApi.Models.Variants
 {
-    public class ListNavigatorVariant : IVariant
+    internal class ListNavigatorVariant : IVariant
     {
         public string SettingsText { get; }
         public SettingsVariant Variant => SettingsVariant.ListNavigator;

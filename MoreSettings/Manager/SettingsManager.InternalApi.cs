@@ -1,5 +1,6 @@
 ﻿using ModSettingsApi.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ModSettingsApi.Manager
 {
@@ -10,7 +11,7 @@ namespace ModSettingsApi.Manager
         public static void AddModTab(TabModel mod)
         {
             Tabs.Add(mod);
-            Tabs.Sort();
+            Tabs = Tabs.OrderBy(x => x.ModName).ToList();
 
             LogManager.Debug("New tab got added to the modded settings.");
         }

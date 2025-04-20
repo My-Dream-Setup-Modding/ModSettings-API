@@ -3,6 +3,7 @@ using BepInEx;
 using HarmonyLib;
 using ModSettingsApi.Patches;
 using ModSettingsApi.Manager;
+using UnityEngine;
 
 namespace ModSettingsApi
 {
@@ -18,8 +19,11 @@ namespace ModSettingsApi
         public static Harmony ModSettingsApiHarmony { get; } = new Harmony(MODNAME);
         public static ManualLogSource Log { get; set; }
 
+        public static GameObject ModSettingsApi { get; private set; }
+
         public void Awake()
         {
+            ModSettingsApi = this.gameObject;
             Log = Logger;
             ModSettingsApiHarmony.PatchAll(typeof(MainMenuUiPatches));
 
@@ -27,6 +31,7 @@ namespace ModSettingsApi
             //    "mainly used for PrintF Debugging.");
 
             TestDataManager.Init();
+            DebugModManager.Init();
         }
     }
 }

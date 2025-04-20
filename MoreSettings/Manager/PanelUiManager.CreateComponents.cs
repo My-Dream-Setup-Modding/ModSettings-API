@@ -52,11 +52,12 @@ namespace ModSettingsApi.Manager
                             var combo = _uiComboBox.Instatiate(ui.transform, (ComboBoxVariant)iSetting);
                             debugCompList.Add(combo);
                             break;
-                        case Models.Enums.SettingsVariant.ListNavigator:
-                            LogManager.Warn($"ListNavigator not implemented yet.");
-                            break;
+                        //case Models.Enums.SettingsVariant.ListNavigator:
+                        //    LogManager.Warn($"ListNavigator not implemented yet.");
+                        //    break;
                         case Models.Enums.SettingsVariant.TextInput:
                             var textBox = _uiTextBox.Instatiate(ui.transform, (TextBoxVariant)iSetting);
+                            debugCompList.Add(textBox);
                             break;
                     }
                 }

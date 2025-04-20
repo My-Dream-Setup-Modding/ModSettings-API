@@ -13,8 +13,15 @@ namespace ModSettingsApi.Patches
         {
             LogManager.CategoryMessage();
             SettingsManager.Init(__instance);
+        }
 
-            //ModSettingsApiManager.
+        //Deactivate mod settings window, when any other game window gets open.
+        //Close the modded settings view, when any other view gets open.
+        [HarmonyPatch(typeof(MainMenuUI), nameof(MainMenuUI.HideNews))]
+        [HarmonyPrefix]
+        public static void HideNewsPrefix()
+        {
+            PanelUiManager.Instance?.ClosePanel();
         }
     }
 }

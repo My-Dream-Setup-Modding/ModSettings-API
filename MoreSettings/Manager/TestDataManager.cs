@@ -22,7 +22,7 @@ namespace ModSettingsApi.Manager
                 new ComboBoxOptionData("Option_4")
             });
             lst.Add(test);
-            lst.Add(new ButtonVariant("ButtonOption", "", ButtonPressed));
+            lst.Add(new ButtonVariant("ButtonOption", "BtnText", ButtonPressed));
             //lst.Add(new SliderVariant("SliderOption"));
             lst.Add(new TextBoxVariant("TextBoxOption", "GreyText", TextBoxHasChanged, "TextBoxDefaultValue"));
             var settingsData = new TabModel("TestData Mod", lst);
@@ -49,6 +49,53 @@ namespace ModSettingsApi.Manager
         private static void TextBoxHasChanged(string newValue)
         {
             LogManager.Message($"TestDataManager: TextBox value changed, new Value: {newValue}");
+        }
+    }
+
+    public static class DebugModManager
+    {
+        /// <summary>
+        /// Fakes all interaction a normal mod, would do for debugging reasons.
+        /// </summary>
+        public static void Init()
+        {
+            var lst = new List<IVariant>();
+            lst.Add(new ToggleButtonVariant("DebugToggle", ToggleChangedDebug, true));
+            var Debug = new ComboBoxVariant("DebugCombo", ComboValueChanged, new List<ComboBoxOptionData>()
+            {
+                new ComboBoxOptionData("Debug_1"),
+                new ComboBoxOptionData("Debug_2"),
+                new ComboBoxOptionData("Debug_3"),
+                new ComboBoxOptionData("Debug_4")
+            });
+            lst.Add(Debug);
+            lst.Add(new ButtonVariant("ButtonDebugOption", "BtnText", ButtonPressed));
+            //lst.Add(new SliderVariant("SliderOption"));
+            lst.Add(new TextBoxVariant("TextBoxDebugOption", "GreyText", TextBoxHasChanged, "TextBoxDefaultValue"));
+            var settingsData = new TabModel("DebugData Mod", lst);
+
+
+            ModdedSettingsApi.AddMod(settingsData);
+        }
+
+        public static void ButtonPressed(ButtonVariant sender)
+        {
+            LogManager.Message($"DebugDataManager: Button pressed, sender: {sender.SettingsText}");
+        }
+
+        private static void ToggleChangedDebug(bool newValue)
+        {
+            LogManager.Message($"DebugDataManager: Toggle changed, new Value: {newValue}");
+        }
+
+        private static void ComboValueChanged(ComboBoxOptionData data)
+        {
+            LogManager.Message($"DebugDataManager: Combo value changed, new Value: {data.Text}");
+        }
+
+        private static void TextBoxHasChanged(string newValue)
+        {
+            LogManager.Message($"DebugDataManager: TextBox value changed, new Value: {newValue}");
         }
     }
 }

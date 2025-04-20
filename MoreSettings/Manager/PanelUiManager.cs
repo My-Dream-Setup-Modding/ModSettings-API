@@ -1,24 +1,17 @@
 ﻿using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using DG.Tweening;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using UI.CustomElements.Tabs.SettingsTabs;
 using UI.MainMenu;
 using UnityEngine;
 using UnityEngine.UI;
 using ModSettingsApi.Models;
 using TMPro;
-using Unity.VisualScripting;
 using ModSettingsApi.Models.Variants;
-using UnityEngine.UIElements;
-using Unity.VideoHelper;
-using Sirenix.Utilities;
 using Button = UnityEngine.UI.Button;
 using ModSettingsApi.Models.Ui;
 using ModSettingsApi.Models.UiWrapper;
-using System.Linq;
 
 namespace ModSettingsApi.Manager
 {
@@ -45,19 +38,29 @@ namespace ModSettingsApi.Manager
 
         private RectTransform _panel;
         private HorizontalLayoutGroup _tabs;
+        private GameObject _tabButton2;
+        private TextMeshProUGUI _tabButton2Text;
+        private TextMeshProUGUI _tabButtonText;
 
         /// <summary>
         /// Singleton Pattern mainly used, 
         /// </summary>mich ärg
         public static PanelUiManager Instance { get; set; }
 
-        public Dictionary<TabModel, GameObject> Views { get; set; } 
+        public Dictionary<TabModel, GameObject> Views { get; set; }
             = new Dictionary<TabModel, GameObject>();
-        
+
+        /// <summary>
+        /// The current Tabmodel, that is active.
+        /// </summary>
+        public TabModel CurrentActive { get; set; }
+
         /// <summary>
         /// A mod to used ui settings wrapper map, mainly used to help debugging via unityexplorer.
         /// </summary>
         public Dictionary<TabModel, List<object>> DebugComponentList { get; set; } = new Dictionary<TabModel, List<object>>();
+
+        public bool IsOpen { get; set; }
 
         public PanelUiManager(MainMenuUI gameUi, List<TabModel> modsToRender)
         {
@@ -74,6 +77,7 @@ namespace ModSettingsApi.Manager
             {
                 Initialize();
                 BuildView();
+                OpenApiView();
                 _initialized = true;
             }
 
@@ -85,22 +89,29 @@ namespace ModSettingsApi.Manager
             //_panel.transform.DOKill();
             _panel.transform.DOScale(1.1f, 0.25f).
                 OnComplete<TweenerCore<Vector3, Vector3, VectorOptions>>(
-                () => _panel.transform.DOScale(1f, 0.1f).OnComplete(() =>
-                        {
+                (() => _panel.transform.DOScale(1f, 0.1f)));
 
-                        }));
+            IsOpen = true;
         }
 
         public void ClosePanel()
         {
+            if (!IsOpen)
+                return;
+
             _ui.ShowNews();
             //_panel.transform.DOKill();
             _panel.transform.DOScale(0.0f, 0.25f);
+            IsOpen = false;
         }
 
         private void Initialize()
         {
             LogManager.Message("Instatiate Tab elements.");
+
+            var closeButton = _panel.transform.Find("CloseButton").GetComponent<Button>();
+            closeButton.onClick.RemoveAllListeners();
+            closeButton.onClick.AddListener(ClosePanel);
 
             //Removing all TabButtons on the top, but ModSettings.
             foreach (RectTransform child in _tabs.GetComponentInChildren<RectTransform>())
@@ -120,13 +131,27 @@ namespace ModSettingsApi.Manager
                         UnityEngine.Object.Destroy(child.gameObject);
                         break;
                     case "General":
+                        if (_tabButton != null) continue;
                         _tabButton = child.gameObject;
                         _tabButton.transform.SetParent(_tabs.transform);
-                        _tabButton.GetComponentInChildren<TextMeshProUGUI>().SetText("Modded Tab");
+                        _tabButtonText = _tabButton.GetComponentInChildren<TextMeshProUGUI>();
+                        _tabButtonText.SetText("Modded Tab");
                         var btn = _tabButton.GetComponent<Button>();
-                        btn.onClick = new Button.ButtonClickedEvent();
-                        btn.onClick.AddListener(()=> OpenMod(Views.First().Key));
+                        btn.onClick.RemoveAllListeners();
+                        btn.onClick.AddListener(OpenApiView);
 
+                        break;
+                    case "Graphics":
+                        if (_tabButton2 != null) continue;
+                        _tabButton2 = child.gameObject;
+                        _tabButton2.transform.SetParent(_tabs.transform);
+                        _tabButton2Text = _tabButton2.GetComponentInChildren<TextMeshProUGUI>();
+                        var btn2 = _tabButton2.GetComponent<Button>();
+                        btn2.onClick.RemoveAllListeners();
+                        btn2.onClick = new Button.ButtonClickedEvent();
+                        btn2.onClick.AddListener(OpenModView);
+
+                        _tabButton2.SetActive(false);
                         break;
                     default:
                         UnityEngine.Object.Destroy(child.gameObject);
@@ -161,8 +186,6 @@ namespace ModSettingsApi.Manager
                         LogManager.Message($"Creating ModdedView.");
                         //Creating temporary object, since i can't figure out, how to not get an instatiated object destroyed immediately otherwise ...
                         _modView = CreateModView(generalView, "ModdedView");
-                        _modView.gameObject.SetActive(true);
-                        _modView.GetComponent<VerticalLayoutGroup>().enabled = true;
 
                         var settingApiTab = new TabModel("ModSettingsAPI", new List<IVariant>());
                         Views.Add(settingApiTab, _modView);
@@ -172,7 +195,7 @@ namespace ModSettingsApi.Manager
                             LogManager.Warn($"Adding settings view for {mod.ModName}");
 
                             var modView = CreateModView(generalView, $"ModView_{mod.ModName}");
-                            settingApiTab.Settings.Add(new ButtonVariant(mod.ModName, "Open", OpenMod));
+                            settingApiTab.Settings.Add(new ButtonVariant(mod.ModName, "Open", x => OpenModView(mod)));
                             Views.Add(mod, modView.gameObject);
                         }
 
@@ -183,7 +206,6 @@ namespace ModSettingsApi.Manager
 
                     case "Graphics":
                         var view = child.GetComponentInChildren<VerticalLayoutGroup>(true);
-                        LogManager.Message($"Graphics found layoutGroup: {(view != null ? "Yes" : "No")}");
                         foreach (var innerChild in view.GetComponentsInChildren<RectTransform>())
                         {
                             LogManager.Message($"Found in graphic child: {innerChild.name}");
@@ -210,7 +232,7 @@ namespace ModSettingsApi.Manager
                             }
                         }
 
-                        UnityEngine.Object.Destroy(view);
+                        UnityEngine.Object.Destroy(view.gameObject);
 
                         break;
                     case "Audio":
@@ -244,24 +266,49 @@ namespace ModSettingsApi.Manager
 
             var existingbutton = _ui.workshopPanel.Find("FurnitureUpload/UploadToWorkshop");
             _uiButton = SettingButtonWrapper.Create(_uiToggleButton, existingbutton.gameObject);
+
+            _uiComboBox.ManagedGameObject.SetActive(false);
+            _uiToggleButton.ManagedGameObject.SetActive(false);
+            _uiSlider.ManagedGameObject.SetActive(false);
+            _uiTextBox.ManagedGameObject.SetActive(false);
+            _uiButton.ManagedGameObject.SetActive(false);
         }
 
-        private void OpenMod(ButtonVariant sender)
+        private void OpenModView(TabModel openMod)
         {
-            LogManager.Message($"Button Click from sender {sender.SettingsText}");
-            IVariant variant = sender as IVariant;
-            OpenMod(variant.ParentMod);
+            LogManager.Message($"Open mod {openMod.ModName}");
+            CurrentActive = openMod;
+            _tabButton2Text.SetText($"{openMod.ModName}");
+            OpenModView();
         }
 
-        private void OpenMod(TabModel modToOpen)
+        private void OpenApiView()
         {
-            var modView = Views[modToOpen];
+            LogManager.Message($"Open API View.");
+            foreach (var view in Views)
+                view.Value.SetActive(false);
+
+            _tabButton2Text.color = new Color(0.7f, 0.7f, 0.7f);
+            _tabButtonText.color = new Color(1f, 1f, 1f);
+
+            _modView.SetActive(true);
+        }
+
+        private void OpenModView()
+        {
             foreach (var view in Views)
             {
-                view.Value.SetActive(view.Key == modToOpen);
+                if (view.Key == CurrentActive)
+                    view.Value.SetActive(true);
+                else
+                    view.Value.SetActive(false);
             }
 
-            ////TODO TabHeader with Splitters logic.
+            _tabButton2.SetActive(true);
+            _tabSplitter.SetActive(true);
+
+            _tabButtonText.color = new Color(0.7f, 0.7f, 0.7f);
+            _tabButton2Text.color = new Color(1f, 1f, 1f);
         }
     }
 }

@@ -23,6 +23,7 @@ namespace ModSettingsApi.Models.Ui
         public static SettingButtonWrapper Create(SettingToggleButtonWrapper existingWrapper, GameObject existingButton)
         {
             var gmObj = GameObject.Instantiate(existingWrapper.ManagedGameObject, existingWrapper.ManagedGameObject.transform.parent);
+            gmObj.SetActive(true);
             gmObj.name = $"Custom_ButtonSetting";
 
             //Removing copied toggle components from ToggleButtonWrapper.
@@ -41,6 +42,7 @@ namespace ModSettingsApi.Models.Ui
         public override SettingButtonWrapper Instatiate(Transform parent, ButtonVariant settingModel)
         {
             var gmObj = GameObject.Instantiate(ManagedGameObject, parent);
+            gmObj.gameObject.SetActive(true);
             gmObj.name = $"{((IVariant)settingModel).ParentMod.ModName}_Button_{settingModel.SettingsText}";
             var combo = new SettingButtonWrapper(gmObj);
             //Switching to the copied gameobject context.

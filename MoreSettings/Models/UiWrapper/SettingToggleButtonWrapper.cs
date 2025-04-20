@@ -26,6 +26,7 @@ namespace ModSettingsApi.Models.Ui
         public override SettingToggleButtonWrapper Instatiate(Transform parent, ToggleButtonVariant settingModel)
         {
             var gmObj = GameObject.Instantiate(ManagedGameObject, parent);
+            gmObj.SetActive(true);
             gmObj.name = $"{((IVariant)settingModel).ParentMod.ModName}_ToggleButton_{settingModel.SettingsText}";
             var toggle = new SettingToggleButtonWrapper(gmObj);
             //Switching to the copied gameobject context.

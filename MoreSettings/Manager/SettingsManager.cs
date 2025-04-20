@@ -80,12 +80,10 @@ namespace ModSettingsApi.Manager
             if (_panelManager is null)
                 _panelManager = new PanelUiManager(_ui, Tabs);
 
-            if(!_modSettingsOpened)
+            if(!_panelManager.IsOpen)
                 _panelManager.OpenPanel();
             else
                 _panelManager.ClosePanel();
-
-            _modSettingsOpened = !_modSettingsOpened;
         }
 
         /// <summary>

@@ -22,6 +22,7 @@ namespace ModSettingsApi.Models.Ui
         public override SettingComboBoxWrapper Instatiate(Transform parent, ComboBoxVariant settingModel)
         {
             var gmObj = GameObject.Instantiate(ManagedGameObject, parent);
+            gmObj.SetActive(true);
             gmObj.name = $"{((IVariant)settingModel).ParentMod.ModName}_Combo_{settingModel.SettingsText}";
             var combo = new SettingComboBoxWrapper(gmObj);
             //Switching to the copied gameobject context.
