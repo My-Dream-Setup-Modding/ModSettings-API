@@ -16,12 +16,12 @@
 		<!--Downloads BepInEx.AssemblyPublicizer.MSBuild and publicizes all game files..-->
 		<!--This changes every Accessmodifier (Private, internal...) to public.-->
 		<PublicizeGameFiles>true</PublicizeGameFiles>
-		
-		<!--If set to yes, automatically copies the compiled assembly into the BepInEx\plugins folder.-->
+
+		<!--Can be used, to automatically copy, the compiled project into the BepInEx\plugins folder.-->
 		<CopyBuildToPluginFolder>true</CopyBuildToPluginFolder>
 
 		<!--Can be used, to define the folder where your plugin gets copied to, if (CopyBuildToPluginFolder) is set to true.-->
 		<!--e.g. "MoveBindings" this will automatically copy your plugins into the BepInEx\plugins\MoveBindings folder.-->
-		<InnerPluginFolder>ModSettingsApi</InnerPluginFolder>
+		<InnerPluginFolder>MdsOverlayApi</InnerPluginFolder>
 	</PropertyGroup>
 </Project>

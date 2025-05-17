@@ -5,6 +5,8 @@ VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModSettingsApi", "MoreSettings\ModSettingsApi.csproj", "{D8C0E68C-8F1D-4653-9589-F72758B90FBF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MdsOverlayApi", "MdsOverlayApi\MdsOverlayApi.csproj", "{C505B487-4E31-47E2-ACA1-6E4062454728}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{D8C0E68C-8F1D-4653-9589-F72758B90FBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D8C0E68C-8F1D-4653-9589-F72758B90FBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D8C0E68C-8F1D-4653-9589-F72758B90FBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C505B487-4E31-47E2-ACA1-6E4062454728}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C505B487-4E31-47E2-ACA1-6E4062454728}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C505B487-4E31-47E2-ACA1-6E4062454728}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C505B487-4E31-47E2-ACA1-6E4062454728}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

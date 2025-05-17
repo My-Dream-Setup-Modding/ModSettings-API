@@ -1,12 +1,13 @@
 <Project InitialTargets="ValidateGamePath">
-	<Import Project="$(MSBuildThisFileDirectory)\GameFolder.props" Condition="Exists('$(MSBuildThisFileDirectory)\GameFolder.props')" />
+	<Import Project="$(MSBuildThisFileDirectory)\GameFolder.props"
+			Condition="Exists('$(MSBuildThisFileDirectory)\GameFolder.props')"/>
 
 	<Target Name="ValidateGamePath">
 		<Error Text="The GameFolder property must be set to the My Dream Setup game folder."
-			   Condition="'$(GameFolder)' == '' or !Exists('$(GameFolder)')" />
+			   Condition="'$(GameFolder)' == '' or !Exists('$(GameFolder)')"/>
 		<Error Text="The ModmanProfileFolder property must be set to the parent folder of your BepInEx Instance."
 			   Condition="'$(ModmanProfileFolder)' == '' 
-			   or !Exists('$(ModmanProfileFolder)\BepInEx')" />
+			   or !Exists('$(ModmanProfileFolder)\BepInEx')"/>
 	</Target>
 
 	<!-- Path Info -->
@@ -19,18 +20,23 @@
 
 	<!-- BepInEx libs -->
 	<ItemGroup>
-		<Reference Include="$(BIELibsFolder)\BepInEx*.dll" Private="false" />
-		<Reference Include="$(BIELibsFolder)\0Harmony.dll" Private="false" />
-		<Reference Include="$(BIELibsFolder)\MonoMod.RuntimeDetour.dll" Private="false" />
+		<Reference Include="$(BIELibsFolder)\BepInEx*.dll" Private="false"/>
+		<Reference Include="$(BIELibsFolder)\0Harmony.dll" Private="false"/>
+		<Reference Include="$(BIELibsFolder)\MonoMod.RuntimeDetour.dll" Private="false"/>
 	</ItemGroup>
 
 	<Choose>
-		<!--If the MDS Auto Publicizer has run yet, use publicized dlls and activate unsafe code.-->
-		<When Condition="Exists('$(PublicizedLibsFolder)\Assembly-CSharp.dll')">
-			<ItemGroup >
-				<Reference Include="$(PublicizedLibsFolder)\*.dll" Private="false" />
-				<Reference Remove="$(PublicizedLibsFolder)\netstandard.dll" />
+		<When Condition="$(PublicizeGameFiles) == 'true'">
+			<ItemGroup>
+				<PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.3">
+					<PrivateAssets>all</PrivateAssets>
+					<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+				</PackageReference>
+
+				<Reference Include="$(ManagedFolder)\*.dll" Private="false" Publicize="true"/>
+				<Reference Remove="$(ManagedFolder)\netstandard.dll"/>
 			</ItemGroup>
+
 			<PropertyGroup>
 				<!--Allowing unsafe code, otherwise .NET will complain on a non public call.-->
 				<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -38,14 +44,12 @@
 		</When>
 		<!--Use normal not publicized dlls.-->
 		<Otherwise>
-			<ItemGroup >
-				<Reference Include="$(ManagedFolder)\*.dll" Private="false" />
-				<Reference Remove="$(ManagedFolder)\netstandard.dll" />
+			<ItemGroup>
+				<Reference Include="$(ManagedFolder)\*.dll" Private="false"/>
+				<Reference Remove="$(ManagedFolder)\netstandard.dll"/>
 			</ItemGroup>
 		</Otherwise>
 	</Choose>
-	<!-- Interop -->
-
 
 	<!-- Plugin Dependencies -->
 	<ItemGroup>
