@@ -105,6 +105,11 @@ namespace ModSettingsApi.Manager
             IsOpen = false;
         }
 
+        public void AddCustomComponent(TabModel tabModel, GameObject component)
+        {
+
+        }
+
         private void Initialize()
         {
             LogManager.Message("Instatiate Tab elements.");

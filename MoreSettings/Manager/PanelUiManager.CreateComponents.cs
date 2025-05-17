@@ -1,4 +1,5 @@
 ﻿using ModSettingsApi.Models;
+using ModSettingsApi.Models.Enums;
 using ModSettingsApi.Models.Variants;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +20,12 @@ namespace ModSettingsApi.Manager
             return view.gameObject;
         }
 
+        internal void UpdateView(TabModel tabModel)
+        {
+            LogManager.Message($"Updating settings view, for {tabModel.ModName}");
+
+        }
+
         private void BuildView()
         {
             LogManager.Message("Start building modded views.");
@@ -34,34 +41,40 @@ namespace ModSettingsApi.Manager
 
                 foreach (var iSetting in mod.Settings)
                 {
-                    switch (iSetting.Variant)
-                    {
-                        case Models.Enums.SettingsVariant.Button:
-                            var button = _uiButton.Instatiate(ui.transform, (ButtonVariant)iSetting);
-                            debugCompList.Add(button);
-                            break;
-                        case Models.Enums.SettingsVariant.ToggleButton:
-                            var toggle = _uiToggleButton.Instatiate(ui.transform, (ToggleButtonVariant)iSetting);
-                            debugCompList.Add(toggle);
-                            break;
-                        case Models.Enums.SettingsVariant.Slider:
-                            var slider = _uiSlider.Instatiate(ui.transform, (SliderVariant)iSetting);
-                            debugCompList.Add(slider);
-                            break;
-                        case Models.Enums.SettingsVariant.ComboBox:
-                            var combo = _uiComboBox.Instatiate(ui.transform, (ComboBoxVariant)iSetting);
-                            debugCompList.Add(combo);
-                            break;
-                        //case Models.Enums.SettingsVariant.ListNavigator:
-                        //    LogManager.Warn($"ListNavigator not implemented yet.");
-                        //    break;
-                        case Models.Enums.SettingsVariant.TextInput:
-                            var textBox = _uiTextBox.Instatiate(ui.transform, (TextBoxVariant)iSetting);
-                            debugCompList.Add(textBox);
-                            break;
-                    }
+                    var newObject = InstantiateVariant(ui.transform, iSetting);
+                    debugCompList.Add(newObject);
                 }
             }
+        }
+
+        private object InstantiateVariant(Transform parent, IVariant iSetting)
+        {
+            switch (iSetting.Variant)
+            {
+                case SettingsVariant.Button:
+                    var button = _uiButton.Instatiate(parent, (ButtonVariant)iSetting);
+                    return button;
+                case SettingsVariant.ToggleButton:
+                    var toggle = _uiToggleButton.Instatiate(parent, (ToggleButtonVariant)iSetting);
+                    return toggle;
+                case SettingsVariant.Slider:
+                    var slider = _uiSlider.Instatiate(parent, (SliderVariant)iSetting);
+                    return slider;
+                case SettingsVariant.ComboBox:
+                    var combo = _uiComboBox.Instatiate(parent, (ComboBoxVariant)iSetting);
+                    return combo;
+                //case SettingsVariant.ListNavigator:
+                //    LogManager.Warn($"ListNavigator not implemented yet.");
+                //    break;
+                case SettingsVariant.TextInput:
+                    var textBox = _uiTextBox.Instatiate(parent, (TextBoxVariant)iSetting);
+                    return textBox;
+                case SettingsVariant.Custom:
+                    var customOverlay = ((CustomVariant)iSetting).Instantiate(parent);
+                    return customOverlay;
+            }
+
+            throw new KeyNotFoundException();
         }
     }
 }

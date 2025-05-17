@@ -6,7 +6,6 @@ namespace ModSettingsApi.Models.Variants
 {
     public interface IVariant
     {
-        public string SettingsText { get; }
         public SettingsVariant Variant { get; }
 
         /// <summary>
@@ -14,5 +13,14 @@ namespace ModSettingsApi.Models.Variants
         /// </summary>
         [IgnoreDataMember]
         internal TabModel ParentMod { get; set; }
+    }
+
+    /// <summary>
+    /// Used to have an external way, to 
+    /// </summary>
+    public abstract class AbstractIVariant : IVariant
+    {
+        public abstract SettingsVariant Variant { get; }
+        TabModel IVariant.ParentMod { get; set; }
     }
 }

@@ -33,6 +33,8 @@ namespace ModSettingsApi.Models
             }
         }
 
+        internal List<IVariant> RuntimeChanges { get; set; }
+
         public TabModel(string modName, IEnumerable<IVariant> settings)
         {
             ModName = modName;

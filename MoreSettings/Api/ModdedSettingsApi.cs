@@ -1,5 +1,7 @@
 ﻿using ModSettingsApi.Manager;
 using ModSettingsApi.Models;
+using ModSettingsApi.Models.Variants;
+using UnityEngine;
 
 namespace ModSettingsApi.Api
 {
@@ -17,5 +19,20 @@ namespace ModSettingsApi.Api
         {
             SettingsManager.AddModTab(modSettings);
         }
+    }
+
+    public static class RuntimeTabModelApi
+    {
+        public static void AddOnRuntime(this TabModel tab, IVariant customUiComponent)
+        {
+            tab.RuntimeChanges.Add(customUiComponent);
+        }
+
+        public static bool TryRemoveCustomComponentOnRuntime(this TabModel tab, GameObject customUiComponent)
+        {
+            return true;
+        }
+
+        
     }
 }
